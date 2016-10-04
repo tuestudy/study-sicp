@@ -1,0 +1,17 @@
+(load "ex2.87-falsetru.scm")
+
+(put 'neg '(scheme-number) (lambda (x) (make-scheme-number (- x))))
+(put 'neg '(rational) (lambda (x) (make-rational (- (numer x)) (denom x))))
+(put 'neg '(complex)
+     (lambda (x) (make-complex-from-real-imag (- (real-part x))
+                                              (- (imag-part x)))))
+(put 'neg '(polynomial)
+     (lambda (x)
+       (make-polynomial (variable x) (map neg-term (term-list x)))))
+(put 'sub '(polynomial polynomial)
+     (lambda (p1 p2)
+       (add (attach-tag 'polynomial p1)
+            (neg (attach-tag 'polynomial p2)))))
+(define (neg-term t) (make-term (order t) (neg (coeff t))))
+
+(define (neg x) (apply-generic 'neg x))

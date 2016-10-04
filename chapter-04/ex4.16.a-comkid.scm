@@ -1,0 +1,15 @@
+(define (lookup-variable-value var env)
+  (define (unassigned? value)
+    (eq? value '*unassigned*))
+  (define (show-unassigned-variable-error var)
+    (display "Error: ")
+    (display var)
+    (display " is an unassigned variable.\n"))
+  (define (get-value frame)
+    (let ((value (if (null? frame) '() (cdar frame))))
+      (cond ((null? value) (show-unbound-variable-error var))
+            ((unassigned? value) (show-unassigned-variable-error var))
+            (else value))))
+  (get-value (scan var env)))
+    
+

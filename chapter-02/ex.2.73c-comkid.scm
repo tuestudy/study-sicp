@@ -1,0 +1,58 @@
+(load "../misc/local-table.scm")
+(load "../misc/scheme-test-r5rs.scm")
+
+(define (install-deriv-package)
+  (define (=number? exp num)
+    (and (number? exp) (= exp num)))
+  (define (variable? x) (symbol? x))
+  (define (same-variable? v1 v2)
+    (and (variable? v1) (variable? v2) (eq? v1 v2)))  
+  (define (sum? x)
+    (and (pair? x) (eq? (car x) '+)))
+  (define (make-sum a1 a2)
+    (cond ((=number? a1 0) a2)
+          ((=number? a2 0) a1)
+          ((and (number? a1) (number? a2)) (+ a1 a2))
+          (else (list '+ a1 a2))))
+  (define (make-product m1 m2)
+    (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+          ((=number? m1 1) m2)
+          ((=number? m2 1) m1)
+          ((and (number? m1) (number? m2)) (* m1 m2))
+          (else (list '* m1 m2))))  
+  (define (addend s) (car s))
+  (define (augend s) (cadr s))
+  (define (product? x)
+    (and (pair? x) (eq? (car x) '*)))
+  (define (multiplier p) (car p))
+  (define (multiplicand p) (cadr p))
+  
+  (put 'deriv '* (lambda (exp var)          
+                   (make-sum
+                    (make-product (multiplier exp)
+                                  (deriv (multiplicand exp) var))
+                    (make-product (deriv (multiplier exp) var)
+                                  (multiplicand exp)))))
+  (put 'deriv '+ (lambda (exp var)          
+                   (make-sum (deriv (addend exp) var)
+                             (deriv (augend exp) var)))))  
+
+(install-deriv-package)
+
+(define (deriv exp var)
+  (define (variable? x) (symbol? x))
+  (define (same-variable? v1 v2)
+    (and (variable? v1) (variable? v2) (eq? v1 v2)))  
+  (cond ((number? exp) 0)
+        ((variable? exp) (if (same-variable? exp var) 1 0))
+        (else ((get 'deriv (operator exp)) (operands exp)
+                                           var))))
+
+(define (operator exp) (car exp))
+(define (operands exp) (cdr exp))
+
+(run (make-testcase
+      '(assert-equal? '3 
+                      (deriv '(* x 3) 'x))
+      '(assert-equal? '1 
+                      (deriv '(+ x 3) 'x))))

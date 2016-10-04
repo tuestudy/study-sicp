@@ -1,0 +1,12 @@
+(define (tree-map f tree)
+  (cond ((null? tree) null)
+        ((not (pair? tree)) (f tree))
+        (else (cons (tree-map f (car tree))
+                    (tree-map f (cdr tree))))))
+
+(define (tree-map2 f tree)
+  (map (lambda (t)
+         (if (pair? t)
+          (tree-map2 f t)
+           (f t)))
+       tree))

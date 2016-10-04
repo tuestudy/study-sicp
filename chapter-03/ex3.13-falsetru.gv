@@ -1,0 +1,14 @@
+// circo
+digraph g {
+    Z [ shape=none ];
+    A [ label="<1>'A|<2>" shape=record ];
+    B [ label="<1>'B|<2>" shape=record ];
+    C [ label="<1>'C|<2>" shape=record ];
+    hidden1 [ label="" shape=none]
+    hidden2 [ label="" shape=none]
+
+    Z -> A:1;
+    A:2 -> B;
+    B:2 -> C;
+    C:2 -> A;
+}

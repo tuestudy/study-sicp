@@ -1,0 +1,50 @@
+(define (make-account balance password)
+  (let ((count 0))
+    (define (withdraw amount)
+      (if (>= balance amount)
+          (begin (set! balance (- balance amount))
+                 balance)
+          "Insufficient funds"))
+    (define (deposit amount)
+      (set! balance (+ balance amount))
+      balance)
+    (define (call-the-cops)
+      (display "call the cops :$\n")
+      #f)
+    (define (correct-password? pw)
+      ;(display count)
+      ;(newline)
+      (cond ((eq? password pw) 
+             (begin (set! count 0) #t))
+            ((< count 6)
+             (begin (set! count (+ count 1)) #f))
+            (else
+             (call-the-cops))))
+    (define (dispatch pw m)
+      (cond
+        ((not (correct-password? pw)) (lambda (x) (display "Incorrect password\n")))
+        ((eq? m 'withdraw) withdraw)
+        ((eq? m 'deposit) deposit)
+        (else (error "Unknown request -- MAKE-ACCOUNT"
+                     m))))
+    dispatch))
+
+(define acc (make-account 100 'secret-password))
+((acc 'secret-password 'withdraw) 40)
+
+(define (repeat n proc)
+  (if (> n 0)
+      (begin
+        (proc)
+        (repeat (- n 1) proc))))
+
+(define (incorrect-test)
+  ((acc 'some-other-password 'deposit) 50))
+
+(define (correct-test)
+  ((acc 'secret-password 'withdraw) 40))
+
+(repeat 3 incorrect-test)
+(repeat 1 correct-test)
+(repeat 4 incorrect-test)
+(repeat 3 incorrect-test)

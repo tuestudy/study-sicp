@@ -1,0 +1,5 @@
+(define (proc a b c)
+	(define (proc2 a b) (+ (* a a) (* b b)))
+	(if (<= a b)
+		(if (<= a c) (proc2 b c) (proc2 a b))
+		(if (<= b c) (proc2 a c) (proc2 a b))))

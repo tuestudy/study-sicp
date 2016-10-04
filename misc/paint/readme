@@ -1,0 +1,17 @@
+이 소스는 http://planet.plt-scheme.org/display.ss?package=sicp.plt&owner=soegaard 에서 수정한 소스입니다.
+hend.scm 파일의 below 프로시저를 고쳤습니다.
+
+연습문제 소스 파일이 있는 폴더에 압축을 푸신 후
+'(require "paint/painters.ss")'라는 식을 넣으시면 됩니다.
+
+고친이 : NoSyu(http://nosyu.egloos.com)
+
+
+
+I edited 'below' procedure in 'hend.scm'.
+That file is from 'http://planet.plt-scheme.org/display.ss?package=sicp.plt&owner=soegaard'
+
+1. Extract the zip file in SICP exercise source file folder.
+2. Write '(require "paint/painters.ss")' in SICP exercise source file.
+
+edited by NoSyu(http://nosyu.egloos.com)

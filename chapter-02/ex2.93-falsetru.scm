@@ -1,0 +1,6 @@
+(load "ex2.87-falsetru.scm")
+(define (make-rat n d) (cons n d))
+(define (add-rat x y)
+  (make-rat (add (mul (numer x) (denom y))
+                 (mul (numer y) (denom x)))
+            (mul (denom x) (denom y))))

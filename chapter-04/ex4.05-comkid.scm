@@ -1,0 +1,18 @@
+;(load "../misc/myeval-helper.scm")
+(define (eval-cond exp env)
+  (eval-clauses (cond-clauses exp) env))
+
+(define (eval-clauses clauses env)
+  (define (eval-actions clause)
+    (let ((test (car clause))
+          (rest (cdr clause)))
+      (if (eq? (car rest) '=>)
+          (myeval (list (cadr rest) test) env)
+          (myeval (sequence->exp rest) env))))
+  (let ((clause (car clauses)))
+    (cond ((cond-else-clause? clause)
+           (myeval (sequence->exp (cond-actions clause)) env))
+          ((true? (myeval (cond-predicate clause) env))
+           (eval-actions clause))
+          (else
+           (eval-clauses (cdr clauses) env)))))

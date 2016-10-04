@@ -1,0 +1,11 @@
+(load "ch4-myeval-pkg-comkid.scm")
+(load "../misc/scheme-test-r5rs.scm")
+(define the-global-environment (setup-environment))
+(define test-#1 '(cond ((assoc 'b '((a 1) (b 2))) => cadr)
+                                   (else false)))
+(display "[ex4.05 - Tests]\n")
+(run (make-testcase
+      '(assert-equal? 1 (myeval '(cond ((= 1 1) 1) (else 0)) the-global-environment))
+      '(assert-equal? 0 (myeval '(cond ((= 1 0) 1) (else 0)) the-global-environment))
+      '(assert-equal? 2 (myeval test-#1 the-global-environment))
+      ))

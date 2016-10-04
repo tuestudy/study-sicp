@@ -1,0 +1,10 @@
+(define (make-procedure parameters body env)
+;  (display "make-procedure: 'procedure\n")
+;  (display "parameters : ") (display parameters) (newline)
+;  (display "body: ") (display (scan-out-defines body)) (newline)
+;  (display "env: ") (display env) (newline)
+;  (list 'procedure parameters (scan-out-defines body) env))
+  (list 'procedure parameters body env))
+
+(define (procedure-body p) 
+  (scan-out-defines (caddr p)))

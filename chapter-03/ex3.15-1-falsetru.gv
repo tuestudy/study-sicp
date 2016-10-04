@@ -1,0 +1,16 @@
+digraph g {
+    p1 [ label="<1>|<2>" shape="record" ]
+    p2 [ label="<1>|<2>" shape="record" ]
+    p3 [ label="<1>|<2>/" shape="record" ]
+    z1 [ shape="none" ]
+    x  [ shape="none" ]
+    wow [ shape="rectangle" ]
+    b   [ shape="rectangle" ]
+
+    subgraph { rank=same; z1 -> p1 }
+    subgraph { rank=same; x -> p2; p2:2 -> p3 }
+    p1:1 -> p2;
+    p1:2 -> p2;
+    p2:1 -> wow;
+    p3:1 -> b;
+}
